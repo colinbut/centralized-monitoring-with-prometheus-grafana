@@ -1,0 +1,24 @@
+groups:
+- name: your-application-name
+  rules:
+  - alert: HighLatency
+    expr: http_server_requests_seconds_sum / http_server_requests_seconds_count > 0.5
+    for: 1m
+    labels:
+      severity: high
+    annotations:
+      summary: High average request latency
+  - alert: Errors
+    expr: logback_events_total{level="error"} > 0
+    for: 1m
+    labels:
+      severity: high
+    annotations:
+      summary: Service has fatal errors
+  - alert: CPUUsage
+    expr: system_cpu_usage > 0.7
+    for: 1m
+    labels:
+      severity: high
+    annotations:
+      summary: Service has abnormally high levels of CPU usage
