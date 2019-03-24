@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: your-application-name
+
+server:
+  port: 8999
+
+management:
+  security:
+    enabled: false
+  metrics:
+    export:
+      prometheus:
+        # enabling prometheus format metrics
+        enabled: true 
+    distribution:
+      #enabling percentile bucket exposure on metrics endpoint
+      percentiles-histogram.http.server.requests: true 
+    percentiles:
+      # expose metrics for 95% and 99% percentile buckets
+      http.server.requests: 0.95, 0.99
+      # expose metric for requests that meet 50ms response time SLA 
+      sla.http.server.requests: 50ms 
+  endpoints:
+    web:
+      # by default Spring expose actuator endpoints on /actuator/ path but prometheus needs it be on /
+      base-path: / 
+      exposure:
+        include: "*"
+      path-mapping:
+        # prometheus looks at /metrics by default when scraping for metrics
+        metrics: spring-metrics
+        prometheus: metrics
