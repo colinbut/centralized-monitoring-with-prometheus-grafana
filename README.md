@@ -2,6 +2,22 @@
 
 ## Performance Monitoring System
 
+There requires 3 components in this monitoring system setup:
+
+1. Your Spring Boot application
+2. Prometheus (gather your application's metrics)
+3. Grafana (for visualisation of your metrics data)
+
+![Monitoring system](etc/Setup.png)
+
+Prometheus is a pull-based system unlike the ELK stack where its a push-based system. Pull based means Prometheus actively pulls data from your application (by scrapping of your configured HTTP endpoint). In case of a Spring Boot app this would be your `/metrics` endpoint that comes as part of Spring Boot's Actuator. So you can see how easily Prometheus works really well with a Spring Boot app.
+
+Prometheus stores the scrapped data in its own TSDB (Time Series Database). You can configure it to use an alternative Time Series Database like InfluxDB. However, for the simplicity of this demo repo I'm jsut going to use the default.
+
+Lastly, Prometheus connects up to Grafana a visualisation tool (like Kibana from the ELK stack) for viewing dashboard of your gathered metrics data. 
+
+From there, you can view and analyse the performance of your Spring Boot web apps.
+
 ### Use Case
 
 This monitoring system is ideal for a modern spring boot application microservices architecture where most of the microservices are web based in such it exposes REST endpoints.
@@ -91,7 +107,7 @@ Alerts show the alerts to fire off upon certain threshold of a metric is met. Fr
 
 However, all this visualisation features of Prometheus is quite limited so that's why you use a specialised visualisation tool in Grafana so you can view your metric data in graphical format with great depth.
 
-## Grafana Setup
+## Grafana
 
 Grafana is a visualisation tool of metrics. Apparently, it is a sister project of Kibana. It was born out of a fork.
 
