@@ -1,6 +1,12 @@
-# centralized-performance-monitoring-with-prometheus-grafana
+# Centralized Performance Monitoring with Prometheus & Grafana
 
 ## Performance Monitoring System
+
+### Use Case
+
+This monitoring system is ideal for a modern spring boot application microservices architecture where most of the microservices are web based in such it exposes REST endpoints.
+
+If you're system contains many legacy applications which are non RESTful backend web services but pure backend web-less applications or traditional web apps running on application servers/web containers that doesn't really use Spring Boot or expose REST endpoints... then this monitoring setup is perhaps not fit for your purpose. A more traditional ELK stack approach might be a better fit.
 
 ## Prometheus
 
@@ -73,11 +79,48 @@ scrape_configs:
 
 The key configurations from above sample is ensuring the url and port in the targets section matches your application and the rule_files property configures the paths to the alerting rules files defined for prometheus to do the alerting via its AlertManager.
 
-## Grafana
+Prometheus contains graphs you can view:
 
-[TBD]
+![prometheus-graphs](etc/prometheus-graphs.png)
 
-## Running the Metrics Monitoring System
+in addition, you can look at the configured alerts:
+
+![prometheus-alerts](etc/prometheus-alerts.png)
+
+Alerts show the alerts to fire off upon certain threshold of a metric is met. From there, you can configure the severity and for how long as well.
+
+However, all this visualisation features of Prometheus is quite limited so that's why you use a specialised visualisation tool in Grafana so you can view your metric data in graphical format with great depth.
+
+## Grafana Setup
+
+Grafana is a visualisation tool of metrics. Apparently, it is a sister project of Kibana. It was born out of a fork.
+
+Default configuration settings that gets bundled with the grafana distribution is generally sufficient therefore just run Grafana.
+
+Grafana default url is: http://localhost:3000
+
+After running in your browser, you log in (default credentials is admin/admin)
+
+First thing to do is to set up datasources which tells Grafana where to look for data to visualise:
+
+![grafana-add-datasource](etc/grafana-add-datasources.png)
+
+Above just basically says get data from Prometheus default url (http://localhost:9090)
+
+Next is to import the come with this repo dashboard configurations (in json format) for both HTTP and JVM visualisations.
+
+Once the dashboards have been imported you will see the visualisations:
+
+__HTTP metrics__
+![grafana-dashboard-http](etc/grafana-dashboard-http.png)
+
+and
+
+__JVM and Memory Metrics__
+![grafana-dashboard-jvm](etc/grafana-dashboard-jvm.png)
+
+
+## Running the Performance Monitoring System
 
 ### Start up your application
 
@@ -105,10 +148,16 @@ or if using gradle wrapper:
 
 ### Start Prometheus
 
+in the Prometheus distribution bin:
+
 ```bash
 ./prometheus --config.file=prometheus.yml
 ```
 
 ### Start Grafana
 
-[TBD]
+in the Grafana distribution bin:
+
+```bash
+./grafana-server
+```
